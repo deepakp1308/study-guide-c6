@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C6 Chemical Reactions — Comprehensive Study Guide — Exam Simulator</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f5f7fa; color: #1a1a1a; line-height: 1.6; }
+  .header { background: #1a3c5e; color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 100; }
+  .header h1 { font-size: 22px; }
+  .timer { font-size: 28px; font-weight: 700; margin-top: 8px; font-variant-numeric: tabular-nums; }
+  .timer.warning { color: #ff9800; }
+  .timer.danger { color: #ff4444; animation: pulse 1s infinite; }
+  @keyframes pulse { 50% { opacity: 0.5; } }
+  .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+  .exam-info {
+    background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-align: center;
+  }
+  .exam-info .stat { display: inline-block; margin: 0 16px; }
+  .exam-info .stat-val { font-size: 24px; font-weight: 700; color: #2a5f8f; }
+  .exam-info .stat-label { font-size: 12px; color: #888; }
+  .q-card {
+    background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .q-card .q-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+  .q-card .q-num { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+  .q-card .q-marks { font-size: 12px; color: #2a5f8f; font-weight: 600; }
+  .q-card .q-text { font-size: 16px; margin-bottom: 12px; }
+  .q-card textarea {
+    width: 100%; min-height: 100px; padding: 12px; border: 2px solid #e0e0e0;
+    border-radius: 8px; font-family: inherit; font-size: 14px; resize: vertical;
+  }
+  .q-card textarea:focus { border-color: #2a5f8f; outline: none; }
+  .answer-reveal {
+    margin-top: 12px; padding: 12px 16px; background: #f0faf0;
+    border-left: 3px solid #2d8a4e; border-radius: 4px; font-size: 14px;
+    display: none; white-space: pre-wrap;
+  }
+  .answer-reveal.show { display: block; }
+  .controls { text-align: center; margin: 24px 0; }
+  .controls button {
+    padding: 12px 32px; border: none; border-radius: 8px; font-size: 16px;
+    font-weight: 600; cursor: pointer; margin: 0 8px;
+  }
+  .btn-start { background: #2a5f8f; color: white; }
+  .btn-start:hover { background: #1a3c5e; }
+  .btn-submit { background: #2d8a4e; color: white; }
+  .btn-submit:hover { background: #1d6a3e; }
+  .btn-show { background: #e0e0e0; color: #333; }
+  .btn-show:hover { background: #d0d0d0; }
+  .hidden { display: none; }
+  .results {
+    background: white; border-radius: 12px; padding: 32px; text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .results h2 { font-size: 28px; margin-bottom: 16px; }
+  .results .time-taken { font-size: 18px; color: #555; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>C6 Chemical Reactions — Comprehensive Study Guide — Exam Simulator</h1>
+  <div class="timer" id="timer">--:--</div>
+</div>
+<div class="container">
+  <div class="exam-info" id="examInfo">
+    <div class="stat"><div class="stat-val" id="totalQ">-</div><div class="stat-label">Questions</div></div>
+    <div class="stat"><div class="stat-val" id="totalM">-</div><div class="stat-label">Total Marks</div></div>
+    <div class="stat"><div class="stat-val" id="timeLimit">-</div><div class="stat-label">Minutes</div></div>
+    <div style="margin-top:16px;">
+      <button class="btn-start" id="btnStart" onclick="startExam()">Start Exam</button>
+    </div>
+  </div>
+  <div id="questionsArea" class="hidden"></div>
+  <div id="submitArea" class="hidden controls">
+    <button class="btn-submit" onclick="submitExam()">Submit &amp; View Answers</button>
+  </div>
+  <div id="resultsArea" class="hidden"></div>
+</div>
+<script>
+const EXAM = {"title": "C6 Chemical Reactions \u2014 Comprehensive Study Guide", "timeMinutes": 45, "questions": [{"id": "Question C6.01", "question": "State whether the following changes are physical or chemical: (a) melting of ice, (b) burning of magnesium, (c) evaporation of ethanol, (d) dissolving of sugar in water.", "answer": "(a) Melting of ice is a physical change \u2014 it is a change of state (solid to liquid) with no new substance formed, and it is easily reversed by cooling. (b) Burning of magnesium is a chemical change \u2014 magnesium reacts with oxygen to form magnesium oxide (a new substance), light and heat are released, and it cannot be easily reversed. (c) Evaporation of ethanol is a physical change \u2014 ethanol changes from liquid to gas but remains the same substance. (d) Dissolving sugar in water is a physical change \u2014 the sugar molecules are dispersed but not chemically altered, and the sugar can be recovered by evaporation.\n\n---", "marks": 2, "hasImage": false, "imagePath": null}, {"id": "Question C6.02", "question": "State whether the following changes are physical or chemical, and for each one state whether the change is exothermic or endothermic: (a) condensation of steam to water, (b) burning of magnesium, (c) evaporation of a volatile liquid, (d) burning of concentrated sulfuric acid to water.", "answer": "(a) Condensation of steam is a physical change and it is exothermic \u2014 energy is released as gas particles slow down and form the liquid state. (b) Burning of magnesium is a chemical change and it is exothermic \u2014 it releases a large amount of heat and light energy. (c) Evaporation of a volatile liquid is a physical change and it is endothermic \u2014 energy is absorbed from the surroundings to allow particles to escape from the liquid surface. (d) Adding concentrated sulfuric acid to water is a physical change and it is exothermic \u2014 the process releases significant heat energy.\n\n---", "marks": 2, "hasImage": false, "imagePath": null}, {"id": "Question C6.03", "question": "What is the most important thing that shows us that a chemical reaction has taken place?", "answer": "The most important indicator that a chemical reaction has taken place is the formation of one or more new substances with different chemical properties from the starting materials. Observable signs include colour change, gas production (bubbles), formation of a precipitate, temperature change, or emission of light, but the definitive evidence is that the products are chemically different from the reactants.\n\n---", "marks": 2, "hasImage": false, "imagePath": null}, {"id": "Question C6.04", "question": "(3 marks)\n\nHydrogen peroxide is a colourless liquid with the formula H\u2082O\u2082. It is a very reactive oxidising agent. Hydrogen peroxide decomposes to form water and oxygen. What will we observe happening to the rate of a chemical reaction in response to the following: (a) an increase in temperature, (b) an increase in the surface area of a solid reactant, (c) an increased concentration of a reacting solution?", "answer": "(a) An increase in temperature will increase the rate of reaction. The particles will move faster, leading to more frequent collisions. Additionally, a greater proportion of particles will have energy equal to or greater than the activation energy, making more collisions successful. (b) An increase in surface area will increase the rate. More of the solid surface is exposed to the other reactant, so there are more collisions per second between reactant particles. (c) An increased concentration will increase the rate. There are more reactant particles in the same volume of solution, leading to more frequent collisions and therefore a faster reaction.\n\n---", "marks": 3, "hasImage": false, "imagePath": null}, {"id": "Question C6.05", "question": "Why is food stored in a refrigerator?", "answer": "Food is stored in a refrigerator because the lower temperature slows down the rate of chemical reactions that cause food to decay and spoil. At lower temperatures, the particles in the food and in any bacteria present have less kinetic energy, move more slowly, and collide less frequently. Fewer particles have enough energy to exceed the activation energy for the decomposition reactions. This means the food stays fresh for longer.\n\n---", "marks": 2, "hasImage": false, "imagePath": null}, {"id": "Question C6.06", "question": "What happens to the rate of a reaction over time, i.e., as the reaction progresses?", "answer": "The rate of a reaction decreases as the reaction progresses. This is because the reactants are being used up, so their concentration decreases over time. With fewer reactant particles present, there are fewer collisions per second, and the reaction slows down. Eventually, when one or more reactants are completely used up, the reaction stops entirely. This is shown on a graph by the curve becoming less steep and eventually levelling off (becoming horizontal).\n\n---", "marks": 2, "hasImage": false, "imagePath": null}, {"id": "Question C6.07", "question": "What is a catalyst?", "answer": "A catalyst is a substance that increases the rate of a chemical reaction without being chemically changed or used up at the end of the reaction. It works by providing an alternative reaction pathway that has a lower activation energy. This means that a greater proportion of the colliding particles have enough energy to react successfully, so the reaction occurs faster. The catalyst can be recovered and reused because it is not consumed.\n\n---", "marks": 2, "hasImage": false, "imagePath": null}, {"id": "Question C6.08", "question": "Does the presence of a catalyst increase or decrease the activation energy for a reaction?", "answer": "A catalyst decreases the activation energy for a reaction. It provides an alternative reaction pathway with a lower energy barrier. This means more particles in the reaction mixture have sufficient energy to overcome the activation energy barrier when they collide, leading to a greater proportion of successful collisions and a faster rate of reaction.\n\n---", "marks": 2, "hasImage": false, "imagePath": null}, {"id": "Question C6.09", "question": "In terms of the collision theory, explain why the rate of a reaction increases with: (a) an increase in temperature, (b) an increase in the surface area of a solid reactant, (c) an increased concentration of a reacting solution.", "answer": "(a) When temperature increases, the kinetic energy of the particles increases. This has two effects: the particles move faster so they collide more frequently, AND a greater proportion of particles have kinetic energy equal to or exceeding the activation energy. Both effects mean more successful collisions per second, so the rate increases. (b) When the surface area of a solid increases (e.g., by grinding it into smaller pieces), more of the solid surface is exposed to the other reactant. This increases the number of collisions per second between reactant particles and the solid surface, so the rate increases. (c) When concentration increases, there are more reactant particles in the same volume. This means the particles are closer together and collide more frequently. More collisions per ", "marks": 2, "hasImage": false, "imagePath": null}, {"id": "Question C6.10", "question": "(4 marks)\n\nSome chemical reactions and their equations are listed here. For each reaction, identify which substance is oxidised and which is reduced:\n- A: hexane + oxygen \u2192 carbon dioxide + water\n- B: magnesium + oxygen \u2192 magnesium oxide\n- C: calcium + copper(II) oxide \u2192 calcium oxide + copper\n- D: magnesium + copper(II) oxide \u2192 magnesium oxide + copper\n- E: hydrochloric acid + sodium hydroxide \u2192 sodium chloride + water", "answer": "A: Hexane is oxidised (gains oxygen to form CO\u2082 and H\u2082O). Oxygen is the oxidising agent \u2014 it is not meaningfully &quot;reduced&quot; here, but the oxygen is incorporated into the products. B: Magnesium is oxidised (gains oxygen to form MgO). Oxygen is reduced. C: Calcium is oxidised (gains oxygen to form calcium oxide). Copper(II) oxide is reduced (copper loses oxygen to become free copper metal). D: Magnesium is oxidised (gains oxygen to form magnesium oxide). Copper(II) oxide is reduced (copper loses oxygen to become copper metal). E: This is a neutralisation reaction, not a redox reaction. No species is oxidised or reduced \u2014 there is no transfer of oxygen or electrons between elements.\n\n---", "marks": 4, "hasImage": false, "imagePath": null}, {"id": "Question C6.11", "question": "(4 marks)\n\nThe equations for four different chemical reactions are listed here:\n- 1: C\u2093O\u1d67 + CaO + CO\u2082\n- 2: Fe\u2082O\u2083 + 3CO \u2192 2Fe + 3CO\u2082\n- 3: CH\u2084 + 2O\u2082 \u2192 CO\u2082 + 2H\u2082O\n- 4: Ca(OH)\u2082 + H\u2082SO\u2084 \u2192 CaSO\u2084 + 2H\u2082O\n\nIdentify the reaction in which the underlined substance is: (a) oxidised, (b) reduced.", "answer": "(a) In reaction 2, carbon monoxide (CO) is oxidised \u2014 it gains oxygen to form carbon dioxide (CO\u2082). In reaction 3, methane (CH\u2084) is oxidised \u2014 the carbon gains oxygen to form CO\u2082 and the hydrogen gains oxygen to form H\u2082O. (b) In reaction 2, iron(III) oxide (Fe\u2082O\u2083) is reduced \u2014 the iron loses oxygen to form iron metal (Fe). In reaction 1, this is a thermal decomposition where the compound loses CO\u2082.\n\n---", "marks": 4, "hasImage": false, "imagePath": null}, {"id": "Question C6.12", "question": "(4 marks)\n\nThe equations for six different chemical reactions are listed here:\n- A: 3CaO + C \u2192 Ca + CO\n- B: NaBr + Cl\u2082 \u2192 2KCl + Br\u2082\n- C: XCu + Cl\u2082 \u2192 2CuCl\n- D: 2Mg + O\u2082 \u2192 2MgO\n\nUse these reactions to answer the questions that follow. Each alternative may be used once, more than once, or not at all. State which reaction: (a) shows a metal being oxidised, (b) shows a substance being both reduced and oxidised, (c) shows a non-metal being oxidised, (d) shows a non-metal being reduced.", "answer": "(a) Reaction D shows a metal being oxidised \u2014 magnesium gains oxygen to form magnesium oxide. (b) Reaction A shows both oxidation and reduction \u2014 calcium oxide is reduced (loses oxygen) while carbon is oxidised (gains oxygen). (c) Reaction A shows a non-metal (carbon) being oxidised \u2014 carbon gains oxygen to become CO. (d) Reaction B shows a non-metal being reduced \u2014 chlorine gains electrons from bromide ions (or equivalently, in terms of oxygen definitions, the halogen displacement means chlorine is the oxidising agent being reduced).\n\n---", "marks": 4, "hasImage": false, "imagePath": null}, {"id": "Question C6.13", "question": "(6 marks)\n\nThe rate of the reaction between lumps of calcium carbonate and dilute hydrochloric acid was investigated by collecting the gas produced. The results are given in the table:\n\n| Time/s | 0 | 10 | 30 | 40 | 70 | 90 | 120 | 150 |\n|---|---|---|---|---|---|---|---|---|\n| Volume of CO\u2082/cm\u00b3 | 0 | 50 | 80 | 90 | 120 | 130 | 140 | 150 |\n\n(a) The rate for the first 30 seconds is 40/30 = 1.33 cm\u00b3/s. Calculate the rate for the second 30 seconds. (b) Suggest why the volumes at 120 and 150 seconds are the same. (c) Suggest an alternative piece of apparatus that could be used to measure the changes. (d) Give the changes that could be made to the conditions that would speed up the reaction.", "answer": "(a) In the second 30 seconds (from 30s to 60s), the volume changes from 80 cm\u00b3 to approximately 110 cm\u00b3 (interpolating). The rate = (110 - 80) / 30 = 1.0 cm\u00b3/s. This is slower than the initial rate because the reactant concentration has decreased. (b) The volumes at 120 and 150 seconds are the same because the reaction has stopped \u2014 one of the reactants (either the calcium carbonate or the hydrochloric acid) has been completely used up, so no more CO\u2082 is produced. (c) Instead of a gas syringe, a measuring cylinder filled with water and inverted in a water trough could be used (water displacement method). Alternatively, the reaction flask could be placed on a balance to measure the mass loss as CO\u2082 escapes. (d) The reaction could be sped up by: using smaller pieces of calcium carbonate (pow", "marks": 6, "hasImage": false, "imagePath": null}, {"id": "Question C6.14", "question": "(6 marks)\n\nThe reaction between sodium thiosulfate and hydrochloric acid was investigated. The experiment was repeated at different temperatures. The results are given in the table:\n\n| Temperature/\u00b0C | 20 | 30 | 40 | 50 |\n|---|---|---|---|---|\n| Time to obscure cross/s | 47 | 23 | 12 | 6 |\n| 1/time | 0.021 | 0.043 | 0.083 | 0.167 |\n\n(a) Use the information in the table to describe how the reaction rate varies with temperature. (b) Use ideas about reacting particles to explain why reaction rate changes with temperature.", "answer": "(a) The reaction rate increases as temperature increases. The time taken for the cross to disappear decreases from 47 seconds at 20\u00b0C to just 6 seconds at 50\u00b0C. The rate (represented by 1/time) increases steadily \u2014 it roughly doubles for every 10\u00b0C rise in temperature. This means that increasing the temperature has a dramatic effect on the speed of the reaction. (b) At higher temperatures, the reacting particles (sodium thiosulfate ions and hydrochloric acid molecules) have greater kinetic energy. This means they move faster and collide more frequently with each other. More importantly, at higher temperatures a significantly greater proportion of the particles have kinetic energy that equals or exceeds the activation energy (E\u2090) of the reaction. This means a larger fraction of collisions a", "marks": 6, "hasImage": false, "imagePath": null}, {"id": "Question C6.15", "question": "(5 marks)\n\nZinc reacts with dilute sulfuric acid to form hydrogen: Zn + H\u2082SO\u2084 \u2192 ZnSO\u2084 + H\u2082. If lumps of zinc are used, the reaction is quite slow, but small pieces of zinc react more rapidly. (a) State why smaller pieces of zinc react more rapidly. (b) If the acid is heated, the reaction takes place more rapidly. Explain why the reaction speeds up when the acid is heated. Use ideas about collisions and energy.", "answer": "(a) Smaller pieces of zinc have a larger total surface area exposed to the acid compared to the same mass of large lumps. With more surface available, more zinc atoms are in contact with the sulfuric acid molecules at any one time. This increases the number of collisions per second between zinc atoms on the surface and acid particles, so the reaction rate increases. (b) When the acid is heated, the temperature increases. This has two effects on the reacting particles. First, the particles gain kinetic energy and move faster, so they collide more frequently \u2014 this alone would increase the rate. Second, and more importantly, at the higher temperature a greater proportion of the acid particles have kinetic energy equal to or exceeding the activation energy. This means a higher percentage of c", "marks": 5, "hasImage": false, "imagePath": null}, {"id": "Question C6.16", "question": "(3 marks)\n\nWhat type of reaction has happened to the underlined substance in the following equation: CuO + H\u2082 \u2192 Cu + H\u2082O? Explain your answer using ideas about oxygen transfer and electron transfer.", "answer": "Copper(II) oxide (CuO) has been reduced. In terms of oxygen transfer: copper has lost oxygen (CuO \u2192 Cu), which is the definition of reduction. Simultaneously, hydrogen has been oxidised (H\u2082 \u2192 H\u2082O, gaining oxygen). In terms of electron transfer: the copper ion (Cu\u00b2\u207a) in CuO has gained two electrons to become copper metal (Cu\u2070) \u2014 gaining electrons is reduction (using OIL RIG: Reduction Is Gain). The hydrogen atoms have lost electrons \u2014 each H goes from 0 to +1 in H\u2082O, meaning they are oxidised. This is a redox reaction because oxidation and reduction occur simultaneously.\n\n---", "marks": 3, "hasImage": false, "imagePath": null}, {"id": "Question C6.17", "question": "(3 marks)\n\nIdentify which of the following reactions involve both oxidation and reduction (i.e., are redox reactions): (a) NaOH + HCl \u2192 NaCl + H\u2082O, (b) Mg + CuSO\u2084 \u2192 MgSO\u2084 + Cu, (c) CaCO\u2083 \u2192 CaO + CO\u2082.", "answer": "(a) NaOH + HCl \u2192 NaCl + H\u2082O \u2014 this is NOT a redox reaction. It is a neutralisation reaction. No element changes its oxidation state. (b) Mg + CuSO\u2084 \u2192 MgSO\u2084 + Cu \u2014 this IS a redox reaction. Magnesium is oxidised (Mg \u2192 Mg\u00b2\u207a, losing 2 electrons). Copper is reduced (Cu\u00b2\u207a \u2192 Cu, gaining 2 electrons). Magnesium displaces copper because it is more reactive. (c) CaCO\u2083 \u2192 CaO + CO\u2082 \u2014 this is NOT a redox reaction. It is thermal decomposition. The oxidation states of calcium (+2), carbon (+4), and oxygen (-2) do not change.\n\n---", "marks": 3, "hasImage": false, "imagePath": null}, {"id": "Question C6.18", "question": "(2 marks)\n\nWrite the half-equations for the reaction: Zn(s) + Cu\u00b2\u207a(aq) \u2192 Zn\u00b2\u207a(aq) + Cu(s).", "answer": "Oxidation half-equation: Zn(s) \u2192 Zn\u00b2\u207a(aq) + 2e\u207b (zinc loses two electrons \u2014 oxidised). Reduction half-equation: Cu\u00b2\u207a(aq) + 2e\u207b \u2192 Cu(s) (copper ions gain two electrons \u2014 reduced). The two electrons lost by zinc are the same two electrons gained by copper, showing the simultaneous nature of redox.\n\n---\n\n## 7. Quick Revision Card\n\n7 things to remember for C6 Chemical Reactions:\n\n1. Physical vs chemical change \u2014 Physical: no new substance, usually reversible (melting, dissolving). Chemical: new substance formed, usually irreversible (burning, rusting).\n\n2. 5 rate factors \u2014 Surface area, concentration, temperature, pressure, catalyst. All explained by collision theory.\n\n3. Collision theory \u2014 Particles must collide with energy \u2265 activation energy (E\u2090) for a reaction to occur. Rate increases when", "marks": 2, "hasImage": true, "imagePath": "pages_c6_web/IMG_3001.png"}], "totalMarks": 56};
+let timerInterval = null;
+let secondsLeft = 0;
+let startTime = null;
+
+document.getElementById('totalQ').textContent = EXAM.questions.length;
+document.getElementById('totalM').textContent = EXAM.totalMarks;
+document.getElementById('timeLimit').textContent = EXAM.timeMinutes;
+
+function startExam() {
+  document.getElementById('btnStart').classList.add('hidden');
+  document.getElementById('questionsArea').classList.remove('hidden');
+  document.getElementById('submitArea').classList.remove('hidden');
+  secondsLeft = EXAM.timeMinutes * 60;
+  startTime = Date.now();
+  renderQuestions();
+  timerInterval = setInterval(tick, 1000);
+  tick();
+}
+
+function tick() {
+  secondsLeft--;
+  const m = Math.floor(secondsLeft / 60);
+  const s = secondsLeft % 60;
+  const el = document.getElementById('timer');
+  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  el.className = 'timer' + (secondsLeft < 300 ? (secondsLeft < 60 ? ' danger' : ' warning') : '');
+  if (secondsLeft <= 0) { clearInterval(timerInterval); submitExam(); }
+}
+
+function renderQuestions() {
+  const area = document.getElementById('questionsArea');
+  area.innerHTML = '';
+  EXAM.questions.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'q-card';
+    div.innerHTML = `
+      <div class="q-header">
+        <span class="q-num">Question ${i+1} — ${q.id}</span>
+        <span class="q-marks">[${q.marks} marks]</span>
+      </div>
+      <div class="q-text">${q.question}</div>
+      <textarea id="ans_${i}" placeholder="Write your answer here..."></textarea>
+      <div class="answer-reveal" id="reveal_${i}"><b>Model Answer:</b><br>${q.answer}</div>
+    `;
+    area.appendChild(div);
+  });
+}
+
+function submitExam() {
+  clearInterval(timerInterval);
+  const elapsed = Math.round((Date.now() - startTime) / 1000);
+  const m = Math.floor(elapsed / 60);
+  const s = elapsed % 60;
+
+  document.getElementById('submitArea').classList.add('hidden');
+  document.querySelectorAll('.answer-reveal').forEach(el => el.classList.add('show'));
+  document.querySelectorAll('textarea').forEach(el => el.disabled = true);
+  document.getElementById('timer').textContent = 'DONE';
+  document.getElementById('timer').className = 'timer';
+
+  const results = document.getElementById('resultsArea');
+  results.classList.remove('hidden');
+  results.innerHTML = `
+    <div class="results">
+      <h2>Exam Complete</h2>
+      <div class="time-taken">Time taken: ${m}m ${s}s</div>
+      <p style="margin-top:12px;color:#555;">Model answers shown below each question. Review your responses.</p>
+    </div>
+  `;
+
+  try {
+    const sessions = JSON.parse(localStorage.getItem('sf_exam_sessions') || '[]');
+    sessions.push({ date: new Date().toISOString(), questions: EXAM.questions.length, totalMarks: EXAM.totalMarks, timeSec: elapsed });
+    localStorage.setItem('sf_exam_sessions', JSON.stringify(sessions));
+  } catch(e) {}
+}
+</script>
+</body>
+</html>
